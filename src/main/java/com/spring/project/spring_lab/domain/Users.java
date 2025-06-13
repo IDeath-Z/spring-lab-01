@@ -1,9 +1,12 @@
 package com.spring.project.spring_lab.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.spring.project.spring_lab.domain.enums.Roles;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,6 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,4 +49,7 @@ public class Users {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Roles role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Wallets> wallets = new ArrayList<>();
 }

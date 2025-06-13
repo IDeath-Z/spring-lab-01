@@ -5,8 +5,8 @@ import java.util.UUID;
 import com.spring.project.spring_lab.domain.enums.Roles;
 
 public record UserResponseDTO(
-                UUID id,
-                String fullName,
-                String email,
-                Roles role) {
+        UUID id,
+        String fullName,
+        String email,
+        Roles role) {
 }
