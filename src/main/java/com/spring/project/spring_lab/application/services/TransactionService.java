@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import com.spring.project.spring_lab.adapters.web.dto.TransactionAuthDTO;
 
 @Service
-public class TransactionsService {
+public class TransactionService {
 
     private boolean isAuth() {
 

@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.spring.project.spring_lab.domain.exceptions.CnpjAlreadyRegisteredException;
 import com.spring.project.spring_lab.domain.exceptions.CpfAlreadyRegisteredException;
-import com.spring.project.spring_lab.domain.exceptions.UserAlreadyRegisteredException;
-import com.spring.project.spring_lab.domain.exceptions.UserNotFoundException;
+import com.spring.project.spring_lab.domain.exceptions.AccountAlreadyRegisteredException;
+import com.spring.project.spring_lab.domain.exceptions.AccountNotFoundException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-    @ExceptionHandler(UserAlreadyRegisteredException.class)
-    public ResponseEntity<?> userAlreadyRegistered(UserAlreadyRegisteredException ex) {
+    @ExceptionHandler(AccountAlreadyRegisteredException.class)
+    public ResponseEntity<?> userAlreadyRegistered(AccountAlreadyRegisteredException ex) {
 
         var body = Map.of(
                 "timestamp", OffsetDateTime.now(),
@@ -52,8 +52,8 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<?> UserNotFound(UserNotFoundException ex) {
+    @ExceptionHandler(AccountNotFoundException.class)
+    public ResponseEntity<?> UserNotFound(AccountNotFoundException ex) {
 
         var body = Map.of(
                 "timestamp", OffsetDateTime.now(),

@@ -1,10 +1,10 @@
-package com.spring.project.spring_lab.adapters.web.dto.users;
+package com.spring.project.spring_lab.adapters.web.dto.account;
 
 import java.util.UUID;
 
 import com.spring.project.spring_lab.domain.enums.Roles;
 
-public record UserResponseDTO(
+public record AccountResponseDTO(
         UUID id,
         String fullName,
         String email,

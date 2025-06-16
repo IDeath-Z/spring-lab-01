@@ -21,13 +21,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "users")
+@Table(name = "account")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Users {
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -50,6 +50,6 @@ public class Users {
     @Enumerated(EnumType.STRING)
     private Roles role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Wallets> wallets = new ArrayList<>();
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Wallet> wallets = new ArrayList<>();
 }

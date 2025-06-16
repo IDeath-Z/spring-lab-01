@@ -1,4 +1,4 @@
-package com.spring.project.spring_lab.adapters.web.dto.users;
+package com.spring.project.spring_lab.adapters.web.dto.account;
 
 import com.spring.project.spring_lab.domain.enums.Roles;
 
@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record UserRequestDTO(
+public record AccountRequestDTO(
                 @NotBlank @Size(max = 100) String fullName,
                 @NotBlank boolean isJuridicPerson,
                 @NotBlank @Size(min = 11, max = 14) String taxId,

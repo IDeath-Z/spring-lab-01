@@ -5,11 +5,11 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.spring.project.spring_lab.domain.Users;
+import com.spring.project.spring_lab.domain.Account;
 
-public interface UsersRepository extends JpaRepository<Users, UUID> {
+public interface AccountRepository extends JpaRepository<Account, UUID> {
 
-    Optional<Users> findByEmail(String email);
+    Optional<Account> findByEmail(String email);
 
     boolean existsByEmail(String email);
 

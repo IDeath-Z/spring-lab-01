@@ -1,4 +1,4 @@
-package com.spring.project.spring_lab.adapters.web.dto.users;
+package com.spring.project.spring_lab.adapters.web.dto.account;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

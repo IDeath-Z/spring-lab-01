@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.project.spring_lab.application.services.TransactionsService;
+import com.spring.project.spring_lab.application.services.TransactionService;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
@@ -15,6 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class TransactionsController {
 
     @Autowired
-    private TransactionsService transactionsService;
+    private TransactionService transactionsService;
 
 }

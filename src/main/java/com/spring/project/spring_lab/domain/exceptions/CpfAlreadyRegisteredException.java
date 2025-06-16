@@ -4,6 +4,6 @@ public class CpfAlreadyRegisteredException extends RuntimeException {
 
     public CpfAlreadyRegisteredException(String cpf) {
 
-        super("A user is already registered with this cpf: " + cpf);
+        super("An account is already registered with this cpf: " + cpf);
     }
 }

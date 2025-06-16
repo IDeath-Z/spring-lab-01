@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.spring.project.spring_lab.domain.Transactions;
+import com.spring.project.spring_lab.domain.Transaction;
 
-public interface TransactionsRepository extends JpaRepository<Transactions, UUID> {
+public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
 
 }

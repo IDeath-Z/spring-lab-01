@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.spring.project.spring_lab.domain.Wallets;
+import com.spring.project.spring_lab.domain.Wallet;
 
-public interface WalletsRepository extends JpaRepository<Wallets, UUID> {
+public interface WalletRepository extends JpaRepository<Wallet, UUID> {
 
 }

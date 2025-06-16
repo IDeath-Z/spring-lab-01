@@ -18,13 +18,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "transactions")
+@Table(name = "transaction")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Transactions {
+public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,11 +33,11 @@ public class Transactions {
 
     @ManyToOne
     @JoinColumn(name = "sender_wallet_id", nullable = false, unique = true)
-    private Wallets senderWallet;
+    private Wallet senderWallet;
 
     @ManyToOne
     @JoinColumn(name = "receiver_wallet_id", nullable = false, unique = true)
-    private Wallets receiverWallet;
+    private Wallet receiverWallet;
 
     @Column(nullable = false)
     private Double amount;

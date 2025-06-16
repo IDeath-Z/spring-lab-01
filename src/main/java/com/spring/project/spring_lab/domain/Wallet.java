@@ -19,13 +19,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "wallets")
+@Table(name = "wallet")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Wallets {
+public class Wallet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,14 +33,14 @@ public class Wallets {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private Users user;
+    @JoinColumn(name = "account_id", nullable = false, unique = true)
+    private Account account;
 
     @OneToMany(mappedBy = "senderWallet", cascade = CascadeType.PERSIST, orphanRemoval = false)
-    private List<Transactions> sendedTransactions = new ArrayList<>();
+    private List<Transaction> sendedTransactions = new ArrayList<>();
 
     @OneToMany(mappedBy = "receiverWallet", cascade = CascadeType.PERSIST, orphanRemoval = false)
-    private List<Transactions> receivedTransactions = new ArrayList<>();
+    private List<Transaction> receivedTransactions = new ArrayList<>();
 
     @Column
     private Double balance;
