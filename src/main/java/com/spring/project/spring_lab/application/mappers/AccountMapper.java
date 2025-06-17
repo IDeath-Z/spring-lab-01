@@ -1,18 +1,23 @@
 package com.spring.project.spring_lab.application.mappers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.spring.project.spring_lab.adapters.web.dto.account.AccountRequestDTO;
 import com.spring.project.spring_lab.adapters.web.dto.account.AccountResponseDTO;
+import com.spring.project.spring_lab.adapters.web.dto.wallet.WalletResponseDTO;
 import com.spring.project.spring_lab.domain.Account;
+import com.spring.project.spring_lab.domain.Wallet;
 
 @Component
 public class AccountMapper {
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    WalletMapper walletMapper;
 
     public Account toDomain(AccountRequestDTO request) {
 
@@ -20,18 +25,31 @@ public class AccountMapper {
         account.setFullname(request.fullName());
         account.setTaxId(request.taxId());
         account.setEmail(request.email());
-        account.setPassword(passwordEncoder.encode(request.password()));
         account.setRole(request.role());
 
         return account;
     }
 
-    public AccountResponseDTO toResponeDTO(Account account) {
+    public AccountResponseDTO toResponseDTO(Account account, List<WalletResponseDTO> wallet) {
 
         return new AccountResponseDTO(
                 account.getId(),
                 account.getFullname(),
                 account.getEmail(),
-                account.getRole());
+                account.getRole(),
+                wallet);
+    }
+
+    public AccountResponseDTO toResponseDTO(Account account) {
+
+        return new AccountResponseDTO(
+                account.getId(),
+                account.getFullname(),
+                account.getEmail(),
+                account.getRole(),
+                account.getWallets()
+                        .stream()
+                        .map(walletMapper::toResponseDTO)
+                        .collect(Collectors.toList()));
     }
 }

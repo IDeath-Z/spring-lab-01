@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import com.spring.project.spring_lab.adapters.web.dto.TransactionAuthDTO;
+import com.spring.project.spring_lab.adapters.web.dto.transaction.TransactionAuthDTO;
 
 @Service
 public class TransactionService {

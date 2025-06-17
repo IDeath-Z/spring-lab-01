@@ -33,7 +33,7 @@ public class Wallet {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false, unique = true)
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
     @OneToMany(mappedBy = "senderWallet", cascade = CascadeType.PERSIST, orphanRemoval = false)
@@ -44,5 +44,11 @@ public class Wallet {
 
     @Column
     private Double balance;
+
+    public Wallet(Account account) {
+        this.account = account;
+        this.balance = 0.0;
+        account.getWallets().add(this);
+    }
 
 }
