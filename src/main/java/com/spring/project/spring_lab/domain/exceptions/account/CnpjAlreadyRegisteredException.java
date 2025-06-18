@@ -1,4 +1,4 @@
-package com.spring.project.spring_lab.domain.exceptions;
+package com.spring.project.spring_lab.domain.exceptions.account;
 
 public class CnpjAlreadyRegisteredException extends RuntimeException {
 

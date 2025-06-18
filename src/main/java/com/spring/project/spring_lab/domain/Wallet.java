@@ -48,7 +48,6 @@ public class Wallet {
     public Wallet(Account account) {
         this.account = account;
         this.balance = 0.0;
-        account.getWallets().add(this);
     }
 
 }

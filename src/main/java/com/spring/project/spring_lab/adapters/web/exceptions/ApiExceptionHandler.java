@@ -8,10 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.spring.project.spring_lab.domain.exceptions.CnpjAlreadyRegisteredException;
-import com.spring.project.spring_lab.domain.exceptions.CpfAlreadyRegisteredException;
-import com.spring.project.spring_lab.domain.exceptions.AccountAlreadyRegisteredException;
-import com.spring.project.spring_lab.domain.exceptions.AccountNotFoundException;
+import com.spring.project.spring_lab.domain.exceptions.account.AccountAlreadyRegisteredException;
+import com.spring.project.spring_lab.domain.exceptions.account.AccountNotFoundException;
+import com.spring.project.spring_lab.domain.exceptions.account.CnpjAlreadyRegisteredException;
+import com.spring.project.spring_lab.domain.exceptions.account.CpfAlreadyRegisteredException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {

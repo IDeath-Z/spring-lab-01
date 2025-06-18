@@ -11,12 +11,12 @@ import com.spring.project.spring_lab.adapters.web.dto.account.AccountRequestDTO;
 import com.spring.project.spring_lab.adapters.web.dto.account.AccountResponseDTO;
 import com.spring.project.spring_lab.adapters.web.dto.wallet.WalletResponseDTO;
 import com.spring.project.spring_lab.application.mappers.AccountMapper;
-import com.spring.project.spring_lab.application.mappers.WalletMapper;
 import com.spring.project.spring_lab.domain.Account;
-import com.spring.project.spring_lab.domain.exceptions.CnpjAlreadyRegisteredException;
-import com.spring.project.spring_lab.domain.exceptions.CpfAlreadyRegisteredException;
-import com.spring.project.spring_lab.domain.exceptions.AccountAlreadyRegisteredException;
-import com.spring.project.spring_lab.domain.exceptions.AccountNotFoundException;
+import com.spring.project.spring_lab.domain.Wallet;
+import com.spring.project.spring_lab.domain.exceptions.account.AccountAlreadyRegisteredException;
+import com.spring.project.spring_lab.domain.exceptions.account.AccountNotFoundException;
+import com.spring.project.spring_lab.domain.exceptions.account.CnpjAlreadyRegisteredException;
+import com.spring.project.spring_lab.domain.exceptions.account.CpfAlreadyRegisteredException;
 import com.spring.project.spring_lab.infrastructure.persistence.AccountRepository;
 
 @Service
@@ -53,10 +53,12 @@ public class AccountService {
 
         Account account = accountMapper.toDomain(request);
         account.setPassword(passwordEncoder.encode(request.password()));
-
         Account saved = accountRepository.save(account);
-        WalletResponseDTO wallet = walletService.addWallet(saved.getId());
-        return accountMapper.toResponseDTO(saved, List.of(wallet));
+
+        Wallet wallet = new Wallet(saved);
+        account.getWallets().add(wallet);
+
+        return accountMapper.toResponseDTO(saved);
     }
 
     public AccountResponseDTO fetchAccount(UUID id) {

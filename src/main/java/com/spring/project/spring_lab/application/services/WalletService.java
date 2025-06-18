@@ -9,7 +9,7 @@ import com.spring.project.spring_lab.adapters.web.dto.wallet.WalletResponseDTO;
 import com.spring.project.spring_lab.application.mappers.WalletMapper;
 import com.spring.project.spring_lab.domain.Account;
 import com.spring.project.spring_lab.domain.Wallet;
-import com.spring.project.spring_lab.domain.exceptions.AccountNotFoundException;
+import com.spring.project.spring_lab.domain.exceptions.account.AccountNotFoundException;
 import com.spring.project.spring_lab.infrastructure.persistence.AccountRepository;
 import com.spring.project.spring_lab.infrastructure.persistence.WalletRepository;
 

@@ -30,16 +30,6 @@ public class AccountMapper {
         return account;
     }
 
-    public AccountResponseDTO toResponseDTO(Account account, List<WalletResponseDTO> wallet) {
-
-        return new AccountResponseDTO(
-                account.getId(),
-                account.getFullname(),
-                account.getEmail(),
-                account.getRole(),
-                wallet);
-    }
-
     public AccountResponseDTO toResponseDTO(Account account) {
 
         return new AccountResponseDTO(
