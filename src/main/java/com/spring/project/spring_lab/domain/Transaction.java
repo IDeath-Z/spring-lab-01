@@ -3,7 +3,7 @@ package com.spring.project.spring_lab.domain;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.spring.project.spring_lab.domain.enums.TransactionTypes;
+import com.spring.project.spring_lab.domain.enums.TransactionType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,7 +43,7 @@ public class Transaction {
     private Double amount;
 
     @Column(nullable = false)
-    private TransactionTypes type;
+    private TransactionType type;
 
     @Column(nullable = false, updatable = false, insertable = false)
     private LocalDateTime date;

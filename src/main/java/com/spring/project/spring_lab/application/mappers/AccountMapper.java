@@ -1,17 +1,13 @@
 package com.spring.project.spring_lab.application.mappers;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.spring.project.spring_lab.adapters.web.dto.account.AccountRequestDTO;
 import com.spring.project.spring_lab.adapters.web.dto.account.AccountResponseDTO;
-import com.spring.project.spring_lab.adapters.web.dto.wallet.WalletResponseDTO;
 import com.spring.project.spring_lab.domain.Account;
-import com.spring.project.spring_lab.domain.Wallet;
 
 @Component
 public class AccountMapper {

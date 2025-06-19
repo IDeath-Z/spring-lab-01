@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.spring.project.spring_lab.domain.enums.Roles;
+import com.spring.project.spring_lab.domain.enums.Role;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -48,7 +48,7 @@ public class Account {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Roles role;
+    private Role role;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Wallet> wallets = new ArrayList<>();

@@ -1,6 +1,5 @@
 package com.spring.project.spring_lab.application.services;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.spring.project.spring_lab.adapters.web.dto.account.AccountRequestDTO;
 import com.spring.project.spring_lab.adapters.web.dto.account.AccountResponseDTO;
-import com.spring.project.spring_lab.adapters.web.dto.wallet.WalletResponseDTO;
 import com.spring.project.spring_lab.application.mappers.AccountMapper;
 import com.spring.project.spring_lab.domain.Account;
 import com.spring.project.spring_lab.domain.Wallet;
@@ -18,6 +16,9 @@ import com.spring.project.spring_lab.domain.exceptions.account.AccountNotFoundEx
 import com.spring.project.spring_lab.domain.exceptions.account.CnpjAlreadyRegisteredException;
 import com.spring.project.spring_lab.domain.exceptions.account.CpfAlreadyRegisteredException;
 import com.spring.project.spring_lab.infrastructure.persistence.AccountRepository;
+import com.spring.project.spring_lab.infrastructure.persistence.WalletRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class AccountService {
@@ -29,11 +30,12 @@ public class AccountService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private WalletService walletService;
+    private WalletRepository walletRepository;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Transactional
     public AccountResponseDTO addAccount(AccountRequestDTO request) {
 
         if (accountRepository.existsByEmail(request.email())) {
@@ -53,22 +55,24 @@ public class AccountService {
 
         Account account = accountMapper.toDomain(request);
         account.setPassword(passwordEncoder.encode(request.password()));
-        Account saved = accountRepository.save(account);
+        Account savedAccount = accountRepository.save(account);
 
-        Wallet wallet = new Wallet(saved);
+        Wallet wallet = new Wallet(savedAccount);
+        walletRepository.save(wallet);
         account.getWallets().add(wallet);
 
-        return accountMapper.toResponseDTO(saved);
+        return accountMapper.toResponseDTO(savedAccount);
     }
 
-    public AccountResponseDTO fetchAccount(UUID id) {
+    public AccountResponseDTO fetchById(UUID accountId) {
 
-        Account account = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException(accountId));
 
         return accountMapper.toResponseDTO(account);
     }
 
-    public AccountResponseDTO fetchAccount(String email) {
+    public AccountResponseDTO fetchByEmail(String email) {
 
         Account account = accountRepository.findByEmail(email).orElseThrow(() -> new AccountNotFoundException(email));
 

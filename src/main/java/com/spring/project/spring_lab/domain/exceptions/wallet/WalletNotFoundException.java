@@ -8,4 +8,9 @@ public class WalletNotFoundException extends RuntimeException {
 
         super("Wallet not found with id: " + id);
     }
+
+    public WalletNotFoundException(String accountEmail) {
+
+        super("No wallet found associated with email: " + accountEmail);
+    }
 }

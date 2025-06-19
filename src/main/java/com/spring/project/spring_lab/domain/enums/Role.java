@@ -3,14 +3,14 @@ package com.spring.project.spring_lab.domain.enums;
 import lombok.Getter;
 
 @Getter
-public enum Roles {
+public enum Role {
 
     USER("USER"),
     SHOPKEEPER("SHOPKEEPER");
 
     private final String role;
 
-    Roles(String role) {
+    Role(String role) {
         this.role = role;
     }
 }
