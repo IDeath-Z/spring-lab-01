@@ -37,6 +37,18 @@ public class WalletService {
         return walletMapper.toResponseDTO(walletRepository.save(wallet));
     }
 
+    public WalletResponseDTO switchDefaultWallet(UUID walletId) {
+
+        Wallet wallet = walletRepository.findById(walletId)
+                .orElseThrow(() -> new WalletNotFoundException(walletId));
+
+        Account account = wallet.getAccount();
+        account.setDefaultWallet(wallet);
+        accountRepository.save(account);
+
+        return walletMapper.toResponseDTO(wallet);
+    }
+
     public WalletResponseDTO fetchById(UUID walletId) {
 
         Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> new WalletNotFoundException(walletId));

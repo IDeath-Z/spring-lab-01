@@ -26,7 +26,7 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<AccountResponseDTO> createAccount(@Valid @RequestBody AccountRequestDTO request) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(accountService.addAccount(request));

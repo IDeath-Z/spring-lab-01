@@ -35,14 +35,4 @@ public class TransactionService {
             return false;
         }
     }
-
-    public String testeAPI() {
-
-        if (isAuth()) {
-            return "Ta autorizado chefe";
-        } else {
-            return "Mio";
-        }
-    }
-
 }

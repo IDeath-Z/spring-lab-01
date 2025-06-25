@@ -55,13 +55,14 @@ public class AccountService {
 
         Account account = accountMapper.toDomain(request);
         account.setPassword(passwordEncoder.encode(request.password()));
-        Account savedAccount = accountRepository.save(account);
 
-        Wallet wallet = new Wallet(savedAccount);
+        Wallet wallet = new Wallet(accountRepository.save(account));
         walletRepository.save(wallet);
+
+        account.setDefaultWallet(wallet);
         account.getWallets().add(wallet);
 
-        return accountMapper.toResponseDTO(savedAccount);
+        return accountMapper.toResponseDTO(accountRepository.save(account));
     }
 
     public AccountResponseDTO fetchById(UUID accountId) {
