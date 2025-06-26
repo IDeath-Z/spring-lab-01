@@ -59,7 +59,7 @@ public class AccountService {
         Wallet wallet = new Wallet(accountRepository.save(account));
         walletRepository.save(wallet);
 
-        account.setDefaultWallet(wallet);
+        account.setMainWallet(wallet);
         account.getWallets().add(wallet);
 
         return accountMapper.toResponseDTO(accountRepository.save(account));

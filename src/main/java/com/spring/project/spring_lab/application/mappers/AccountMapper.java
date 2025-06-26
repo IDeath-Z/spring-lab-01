@@ -33,7 +33,7 @@ public class AccountMapper {
                 account.getFullname(),
                 account.getEmail(),
                 account.getRole(),
-                walletMapper.toResponseDTO(account.getDefaultWallet()),
+                walletMapper.toResponseDTO(account.getMainWallet()),
                 account.getWallets()
                         .stream()
                         .map(walletMapper::toResponseDTO)
