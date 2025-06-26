@@ -5,8 +5,11 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.spring.project.spring_lab.adapters.web.dto.wallet.WalletPageResponseDTO;
 import com.spring.project.spring_lab.adapters.web.dto.wallet.WalletResponseDTO;
 import com.spring.project.spring_lab.application.mappers.WalletMapper;
 import com.spring.project.spring_lab.domain.Account;
@@ -44,15 +47,19 @@ public class WalletService {
         return walletMapper.toResponseDTO(wallet);
     }
 
-    public List<WalletResponseDTO> fetchAllByAccountId(UUID accountId) {
+    public WalletPageResponseDTO fetchAllByAccountId(UUID accountId, Pageable pageable) {
 
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new AccountNotFoundException(accountId));
+        if (!accountRepository.existsById(accountId)) {
+            throw new AccountNotFoundException(accountId);
+        }
 
-        return account.getWallets()
-                .stream()
-                .map(walletMapper::toResponseDTO)
-                .collect(Collectors.toList());
+        Page<Wallet> walletsPage = walletRepository.findAllByAccountId(accountId, pageable);
+
+        return new WalletPageResponseDTO(
+                walletsPage.getTotalPages(),
+                walletsPage.getContent().stream()
+                        .map(walletMapper::toResponseDTO)
+                        .collect(Collectors.toList()));
     }
 
 }
