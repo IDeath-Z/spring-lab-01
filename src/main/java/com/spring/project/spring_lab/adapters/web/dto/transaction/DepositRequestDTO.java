@@ -5,7 +5,7 @@ import java.util.UUID;
 import jakarta.validation.constraints.NotBlank;
 
 public record DepositRequestDTO(
-        @NotBlank Double amount,
-        @NotBlank UUID wallet) {
+                @NotBlank @NotBlank Double amount,
+                @NotBlank UUID wallet) {
 
 }

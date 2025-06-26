@@ -6,6 +6,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.spring.project.spring_lab.adapters.web.dto.transaction.TransactionAuthDTO;
+import com.spring.project.spring_lab.adapters.web.dto.transaction.TransactionResponseDTO;
 
 @Service
 public class TransactionService {
@@ -35,4 +36,6 @@ public class TransactionService {
             return false;
         }
     }
+
+    // public TransactionResponseDTO deposit()
 }

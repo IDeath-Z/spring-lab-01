@@ -56,11 +56,10 @@ public class AccountService {
         Account account = accountMapper.toDomain(request);
         account.setPassword(passwordEncoder.encode(request.password()));
 
-        Wallet wallet = new Wallet(accountRepository.save(account));
-        walletRepository.save(wallet);
+        Wallet wallet = new Wallet(account, 0.0);
+        account.getWallets().add(wallet);
 
         account.setMainWallet(wallet);
-        account.getWallets().add(wallet);
 
         return accountMapper.toResponseDTO(accountRepository.save(account));
     }

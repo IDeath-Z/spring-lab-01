@@ -13,10 +13,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Table(name = "wallet")
@@ -25,6 +28,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Wallet {
 
     @Id
@@ -32,7 +36,8 @@ public class Wallet {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @ManyToOne
+    @NonNull
+    @OneToOne
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
@@ -42,12 +47,8 @@ public class Wallet {
     @OneToMany(mappedBy = "receiverWallet", cascade = CascadeType.PERSIST, orphanRemoval = false)
     private List<Transaction> receivedTransactions = new ArrayList<>();
 
+    @NonNull
     @Column
     private Double balance;
-
-    public Wallet(Account account) {
-        this.account = account;
-        this.balance = 0.0;
-    }
 
 }

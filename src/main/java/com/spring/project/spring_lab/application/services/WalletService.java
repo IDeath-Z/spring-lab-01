@@ -33,7 +33,7 @@ public class WalletService {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountNotFoundException(accountId));
 
-        Wallet wallet = new Wallet(account);
+        Wallet wallet = new Wallet(account, 0.0);
         return walletMapper.toResponseDTO(walletRepository.save(wallet));
     }
 
