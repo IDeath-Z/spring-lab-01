@@ -53,8 +53,8 @@ public class Account {
     private Role role;
 
     @OneToOne
-    @JoinColumn(name = "default_wallet_id")
-    private Wallet defaultWallet;
+    @JoinColumn(name = "main_wallet_id")
+    private Wallet mainWallet;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Wallet> wallets = new ArrayList<>();
