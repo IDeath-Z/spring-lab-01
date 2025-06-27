@@ -3,6 +3,8 @@ package com.spring.project.spring_lab.domain;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.spring.project.spring_lab.domain.enums.TransactionType;
 
 import jakarta.persistence.Column;
@@ -32,11 +34,11 @@ public class Transaction {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "sender_wallet_id", nullable = false, unique = true)
+    @JoinColumn(name = "sender_wallet_id")
     private Wallet senderWallet;
 
     @ManyToOne
-    @JoinColumn(name = "receiver_wallet_id", nullable = false, unique = true)
+    @JoinColumn(name = "receiver_wallet_id", nullable = false)
     private Wallet receiverWallet;
 
     @Column(nullable = false)
@@ -45,6 +47,7 @@ public class Transaction {
     @Column(nullable = false)
     private TransactionType type;
 
-    @Column(nullable = false, updatable = false, insertable = false)
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private LocalDateTime date;
 }
