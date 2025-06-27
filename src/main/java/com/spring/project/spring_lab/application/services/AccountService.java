@@ -11,12 +11,13 @@ import com.spring.project.spring_lab.adapters.web.dto.account.AccountResponseDTO
 import com.spring.project.spring_lab.application.mappers.AccountMapper;
 import com.spring.project.spring_lab.domain.Account;
 import com.spring.project.spring_lab.domain.Wallet;
+import com.spring.project.spring_lab.domain.exceptions.account.AccountAlreadyDeactivatedException;
 import com.spring.project.spring_lab.domain.exceptions.account.AccountAlreadyRegisteredException;
 import com.spring.project.spring_lab.domain.exceptions.account.AccountNotFoundException;
 import com.spring.project.spring_lab.domain.exceptions.account.CnpjAlreadyRegisteredException;
 import com.spring.project.spring_lab.domain.exceptions.account.CpfAlreadyRegisteredException;
+import com.spring.project.spring_lab.domain.exceptions.wallet.BalanceMustBeZeroException;
 import com.spring.project.spring_lab.infrastructure.persistence.AccountRepository;
-import com.spring.project.spring_lab.infrastructure.persistence.WalletRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -28,9 +29,6 @@ public class AccountService {
 
     @Autowired
     private AccountMapper accountMapper;
-
-    @Autowired
-    private WalletRepository walletRepository;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -77,6 +75,29 @@ public class AccountService {
         Account account = accountRepository.findByEmail(email).orElseThrow(() -> new AccountNotFoundException(email));
 
         return accountMapper.toResponseDTO(account);
+    }
+
+    @Transactional
+    public void deactivateAccountById(UUID accountId) {
+
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException(accountId));
+
+        if (!account.isActive()) {
+
+            throw new AccountAlreadyDeactivatedException(accountId);
+        }
+
+        for (Wallet wallet : account.getWallets()) {
+
+            if (wallet.getBalance() != 0.0) {
+
+                throw new BalanceMustBeZeroException("Cannot deactivate account with non-zero wallet balance.");
+            }
+        }
+
+        account.setActive(false);
+        accountRepository.save(account);
     }
 
 }

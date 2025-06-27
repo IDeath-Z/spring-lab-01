@@ -6,9 +6,10 @@ import com.spring.project.spring_lab.adapters.web.dto.wallet.WalletResponseDTO;
 import com.spring.project.spring_lab.domain.enums.Role;
 
 public record AccountResponseDTO(
-        UUID id,
-        String fullName,
-        String email,
-        Role role,
-        WalletResponseDTO mainWallet) {
+                UUID id,
+                String fullName,
+                String email,
+                Role role,
+                boolean isActive,
+                WalletResponseDTO mainWallet) {
 }

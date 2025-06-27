@@ -58,4 +58,7 @@ public class Account {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Wallet> wallets = new ArrayList<>();
+
+    @Column(nullable = false)
+    private boolean isActive = true;
 }

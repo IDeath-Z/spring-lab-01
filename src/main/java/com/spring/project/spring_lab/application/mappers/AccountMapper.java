@@ -33,6 +33,7 @@ public class AccountMapper {
                 account.getFullname(),
                 account.getEmail(),
                 account.getRole(),
+                account.isActive(),
                 walletMapper.toResponseDTO(account.getMainWallet()));
     }
 }
