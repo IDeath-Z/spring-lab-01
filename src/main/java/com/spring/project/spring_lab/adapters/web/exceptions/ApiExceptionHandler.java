@@ -8,11 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.spring.project.spring_lab.domain.exceptions.account.AccountAlreadyDeactivatedException;
 import com.spring.project.spring_lab.domain.exceptions.account.AccountAlreadyRegisteredException;
 import com.spring.project.spring_lab.domain.exceptions.account.AccountNotFoundException;
 import com.spring.project.spring_lab.domain.exceptions.account.CnpjAlreadyRegisteredException;
 import com.spring.project.spring_lab.domain.exceptions.account.CpfAlreadyRegisteredException;
 import com.spring.project.spring_lab.domain.exceptions.transaction.TransactionNotAuthorizedException;
+import com.spring.project.spring_lab.domain.exceptions.wallet.BalanceMustBeZeroException;
 import com.spring.project.spring_lab.domain.exceptions.wallet.InsufficientFundsException;
 import com.spring.project.spring_lab.domain.exceptions.wallet.WalletNotFoundException;
 
@@ -101,5 +103,29 @@ public class ApiExceptionHandler {
                 "message", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+    }
+
+    @ExceptionHandler(AccountAlreadyDeactivatedException.class)
+    public ResponseEntity<?> AccountAlreadyDeactivated(AccountAlreadyDeactivatedException ex) {
+
+        var body = Map.of(
+                "timestamp", OffsetDateTime.now(),
+                "status", HttpStatus.CONFLICT.value(),
+                "error", "Conflict",
+                "message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
+    @ExceptionHandler(BalanceMustBeZeroException.class)
+    public ResponseEntity<?> BalanceMustBeZero(BalanceMustBeZeroException ex) {
+
+        var body = Map.of(
+                "timestamp", OffsetDateTime.now(),
+                "status", HttpStatus.BAD_REQUEST.value(),
+                "error", "BadRequest",
+                "message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 }
