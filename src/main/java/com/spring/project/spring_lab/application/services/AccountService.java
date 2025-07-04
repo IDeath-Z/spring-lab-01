@@ -72,7 +72,8 @@ public class AccountService {
 
     public AccountResponseDTO fetchByEmail(String email) {
 
-        Account account = accountRepository.findByEmail(email).orElseThrow(() -> new AccountNotFoundException(email));
+        Account account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new AccountNotFoundException(email));
 
         return accountMapper.toResponseDTO(account);
     }
