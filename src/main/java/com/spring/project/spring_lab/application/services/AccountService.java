@@ -16,6 +16,7 @@ import com.spring.project.spring_lab.domain.exceptions.account.AccountAlreadyReg
 import com.spring.project.spring_lab.domain.exceptions.account.AccountNotFoundException;
 import com.spring.project.spring_lab.domain.exceptions.account.CnpjAlreadyRegisteredException;
 import com.spring.project.spring_lab.domain.exceptions.account.CpfAlreadyRegisteredException;
+import com.spring.project.spring_lab.domain.exceptions.transaction.AccountTokenMismatchException;
 import com.spring.project.spring_lab.domain.exceptions.wallet.BalanceMustBeZeroException;
 import com.spring.project.spring_lab.infrastructure.persistence.AccountRepository;
 
@@ -23,6 +24,9 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class AccountService {
+
+    @Autowired
+    private TokenService tokenService;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -84,6 +88,11 @@ public class AccountService {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountNotFoundException(accountId));
 
+        if (tokenService.isTokenValid(account)) {
+
+            throw new AccountTokenMismatchException();
+        }
+
         if (!account.isActive()) {
 
             throw new AccountAlreadyDeactivatedException(accountId);
@@ -93,7 +102,7 @@ public class AccountService {
 
             if (wallet.getBalance() != 0.0) {
 
-                throw new BalanceMustBeZeroException("Cannot deactivate account with non-zero wallet balance.");
+                throw new BalanceMustBeZeroException();
             }
         }
 
