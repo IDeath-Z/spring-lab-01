@@ -50,4 +50,7 @@ public class Wallet {
     @Column
     private Double balance;
 
+    @Column(nullable = false)
+    private boolean isActive = true;
+
 }

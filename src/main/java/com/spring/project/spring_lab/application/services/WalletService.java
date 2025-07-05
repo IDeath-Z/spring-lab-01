@@ -14,6 +14,10 @@ import com.spring.project.spring_lab.application.mappers.WalletMapper;
 import com.spring.project.spring_lab.domain.Account;
 import com.spring.project.spring_lab.domain.Wallet;
 import com.spring.project.spring_lab.domain.exceptions.account.AccountNotFoundException;
+import com.spring.project.spring_lab.domain.exceptions.account.AccountTokenMismatchException;
+import com.spring.project.spring_lab.domain.exceptions.wallet.BalanceMustBeZeroException;
+import com.spring.project.spring_lab.domain.exceptions.wallet.CanNotDeactivateMainWalletException;
+import com.spring.project.spring_lab.domain.exceptions.wallet.WalletAlreadyDeactivatedException;
 import com.spring.project.spring_lab.domain.exceptions.wallet.WalletNotFoundException;
 import com.spring.project.spring_lab.infrastructure.persistence.AccountRepository;
 import com.spring.project.spring_lab.infrastructure.persistence.WalletRepository;
@@ -22,6 +26,9 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class WalletService {
+
+    @Autowired
+    private TokenService tokenService;
 
     @Autowired
     private WalletRepository walletRepository;
@@ -38,8 +45,28 @@ public class WalletService {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountNotFoundException(accountId));
 
-        Wallet wallet = new Wallet(account, 0.0);
-        return walletMapper.toResponseDTO(walletRepository.save(wallet));
+        if (!tokenService.isTokenValid(account)) {
+
+            throw new AccountTokenMismatchException();
+        }
+
+        Wallet walletToUse = null;
+
+        for (Wallet wallet : account.getWallets()) {
+
+            if (!wallet.isActive()) {
+
+                walletToUse = wallet;
+                wallet.setActive(true);
+                break;
+            }
+        }
+
+        if (walletToUse == null) {
+            walletToUse = new Wallet(account, 0.0);
+        }
+
+        return walletMapper.toResponseDTO(walletRepository.save(walletToUse));
     }
 
     public WalletResponseDTO fetchById(UUID walletId) {
@@ -62,6 +89,36 @@ public class WalletService {
                 walletsPage.getContent().stream()
                         .map(walletMapper::toResponseDTO)
                         .collect(Collectors.toList()));
+    }
+
+    @Transactional
+    public void deactivateWalletById(UUID walletId) {
+
+        Wallet wallet = walletRepository.findById(walletId)
+                .orElseThrow(() -> new WalletNotFoundException(walletId));
+
+        if (!tokenService.isTokenValid(wallet.getAccount())) {
+
+            throw new AccountTokenMismatchException();
+        }
+
+        if (wallet.getAccount().getMainWallet().equals(wallet)) {
+
+            throw new CanNotDeactivateMainWalletException();
+        }
+
+        if (!wallet.isActive()) {
+
+            throw new WalletAlreadyDeactivatedException();
+        }
+
+        if (wallet.getBalance() != 0.0) {
+
+            throw new BalanceMustBeZeroException();
+        }
+
+        wallet.setActive(false);
+        walletRepository.save(wallet);
     }
 
 }
