@@ -14,9 +14,9 @@ import com.spring.project.spring_lab.domain.Wallet;
 import com.spring.project.spring_lab.domain.exceptions.account.AccountAlreadyDeactivatedException;
 import com.spring.project.spring_lab.domain.exceptions.account.AccountAlreadyRegisteredException;
 import com.spring.project.spring_lab.domain.exceptions.account.AccountNotFoundException;
+import com.spring.project.spring_lab.domain.exceptions.account.AccountTokenMismatchException;
 import com.spring.project.spring_lab.domain.exceptions.account.CnpjAlreadyRegisteredException;
 import com.spring.project.spring_lab.domain.exceptions.account.CpfAlreadyRegisteredException;
-import com.spring.project.spring_lab.domain.exceptions.transaction.AccountTokenMismatchException;
 import com.spring.project.spring_lab.domain.exceptions.wallet.BalanceMustBeZeroException;
 import com.spring.project.spring_lab.infrastructure.persistence.AccountRepository;
 
@@ -88,7 +88,7 @@ public class AccountService {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountNotFoundException(accountId));
 
-        if (tokenService.isTokenValid(account)) {
+        if (!tokenService.isTokenValid(account)) {
 
             throw new AccountTokenMismatchException();
         }
