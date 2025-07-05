@@ -2,10 +2,10 @@ package com.spring.project.spring_lab.application.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
 import com.spring.project.spring_lab.adapters.web.dto.transaction.DepositRequestDTO;
 import com.spring.project.spring_lab.adapters.web.dto.transaction.TransactionAuthDTO;
 import com.spring.project.spring_lab.adapters.web.dto.transaction.TransactionResponseDTO;
@@ -17,6 +17,7 @@ import com.spring.project.spring_lab.domain.Wallet;
 import com.spring.project.spring_lab.domain.enums.TransactionType;
 import com.spring.project.spring_lab.domain.exceptions.account.AccountNotFoundException;
 import com.spring.project.spring_lab.domain.exceptions.transaction.TransactionNotAuthorizedException;
+import com.spring.project.spring_lab.domain.exceptions.transaction.AccountTokenMismatchException;
 import com.spring.project.spring_lab.domain.exceptions.wallet.InsufficientFundsException;
 import com.spring.project.spring_lab.domain.exceptions.wallet.WalletNotFoundException;
 import com.spring.project.spring_lab.infrastructure.persistence.AccountRepository;
@@ -74,6 +75,14 @@ public class TransactionService {
         Wallet wallet = walletRepository.findById(request.wallet())
                 .orElseThrow(() -> new WalletNotFoundException(request.wallet()));
 
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        if (!wallet.getAccount().getEmail().equals(email)) {
+
+            throw new AccountTokenMismatchException();
+
+        }
+
         Transaction transaction = new Transaction();
         transaction.setSenderWallet(null);
         transaction.setReceiverWallet(wallet);
@@ -96,6 +105,14 @@ public class TransactionService {
 
         Account payerAccount = accountRepository.findById(request.payer())
                 .orElseThrow(() -> new AccountNotFoundException(request.payer()));
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        if (!payerAccount.getEmail().equals(email)) {
+
+            throw new AccountTokenMismatchException();
+
+        }
 
         Wallet senderWallet = payerAccount.getMainWallet();
 

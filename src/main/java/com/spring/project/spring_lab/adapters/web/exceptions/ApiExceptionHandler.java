@@ -13,6 +13,7 @@ import com.spring.project.spring_lab.domain.exceptions.account.AccountAlreadyReg
 import com.spring.project.spring_lab.domain.exceptions.account.AccountNotFoundException;
 import com.spring.project.spring_lab.domain.exceptions.account.CnpjAlreadyRegisteredException;
 import com.spring.project.spring_lab.domain.exceptions.account.CpfAlreadyRegisteredException;
+import com.spring.project.spring_lab.domain.exceptions.transaction.AccountTokenMismatchException;
 import com.spring.project.spring_lab.domain.exceptions.transaction.TransactionNotAuthorizedException;
 import com.spring.project.spring_lab.domain.exceptions.wallet.BalanceMustBeZeroException;
 import com.spring.project.spring_lab.domain.exceptions.wallet.InsufficientFundsException;
@@ -127,5 +128,17 @@ public class ApiExceptionHandler {
                 "message", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    @ExceptionHandler(AccountTokenMismatchException.class)
+    public ResponseEntity<?> TokenDoesNotBelongsToUser(AccountTokenMismatchException ex) {
+
+        var body = Map.of(
+                "timestamp", OffsetDateTime.now(),
+                "status", HttpStatus.FORBIDDEN.value(),
+                "error", "Forbidden",
+                "message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 }

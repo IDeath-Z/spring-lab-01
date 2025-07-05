@@ -1,8 +1,10 @@
 package com.spring.project.spring_lab.adapters.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +30,7 @@ public class TransactionController {
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<?> transfer(@RequestBody TransferRequestDTO request) {
+    public ResponseEntity<?> transfer(@RequestBody TransferRequestDTO request, @AuthenticationPrincipal Jwt jwt) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(transactionsService.transfer(request));
     }
