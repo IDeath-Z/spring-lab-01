@@ -18,6 +18,8 @@ import com.spring.project.spring_lab.domain.exceptions.wallet.WalletNotFoundExce
 import com.spring.project.spring_lab.infrastructure.persistence.AccountRepository;
 import com.spring.project.spring_lab.infrastructure.persistence.WalletRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class WalletService {
 
@@ -30,6 +32,7 @@ public class WalletService {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Transactional
     public WalletResponseDTO addWallet(UUID accountId) {
 
         Account account = accountRepository.findById(accountId)
