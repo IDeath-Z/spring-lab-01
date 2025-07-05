@@ -15,8 +15,8 @@ import com.spring.project.spring_lab.domain.Transaction;
 import com.spring.project.spring_lab.domain.Wallet;
 import com.spring.project.spring_lab.domain.enums.TransactionType;
 import com.spring.project.spring_lab.domain.exceptions.account.AccountNotFoundException;
+import com.spring.project.spring_lab.domain.exceptions.account.AccountTokenMismatchException;
 import com.spring.project.spring_lab.domain.exceptions.transaction.TransactionNotAuthorizedException;
-import com.spring.project.spring_lab.domain.exceptions.transaction.AccountTokenMismatchException;
 import com.spring.project.spring_lab.domain.exceptions.wallet.InsufficientFundsException;
 import com.spring.project.spring_lab.domain.exceptions.wallet.WalletNotFoundException;
 import com.spring.project.spring_lab.infrastructure.persistence.AccountRepository;
@@ -77,7 +77,7 @@ public class TransactionService {
         Wallet wallet = walletRepository.findById(request.wallet())
                 .orElseThrow(() -> new WalletNotFoundException(request.wallet()));
 
-        if (tokenService.isTokenValid(wallet.getAccount())) {
+        if (!tokenService.isTokenValid(wallet.getAccount())) {
 
             throw new AccountTokenMismatchException();
         }
@@ -105,7 +105,7 @@ public class TransactionService {
         Account payerAccount = accountRepository.findById(request.payer())
                 .orElseThrow(() -> new AccountNotFoundException(request.payer()));
 
-        if (tokenService.isTokenValid(payerAccount)) {
+        if (!tokenService.isTokenValid(payerAccount)) {
 
             throw new AccountTokenMismatchException();
         }
