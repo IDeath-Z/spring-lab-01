@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -49,6 +50,19 @@ public class TokenService {
         } catch (JWTVerificationException exception) {
 
             return "";
+        }
+    }
+
+    public boolean isTokenValid(Account account) {
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        if (!account.getEmail().equals(email)) {
+
+            return false;
+        } else {
+
+            return true;
         }
     }
 

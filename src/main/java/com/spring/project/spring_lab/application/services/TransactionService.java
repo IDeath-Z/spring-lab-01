@@ -2,7 +2,6 @@ package com.spring.project.spring_lab.application.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -41,6 +40,9 @@ public class TransactionService {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private TokenService tokenService;
+
     private boolean isAuth() {
 
         try {
@@ -75,12 +77,9 @@ public class TransactionService {
         Wallet wallet = walletRepository.findById(request.wallet())
                 .orElseThrow(() -> new WalletNotFoundException(request.wallet()));
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        if (!wallet.getAccount().getEmail().equals(email)) {
+        if (tokenService.isTokenValid(wallet.getAccount())) {
 
             throw new AccountTokenMismatchException();
-
         }
 
         Transaction transaction = new Transaction();
@@ -106,12 +105,9 @@ public class TransactionService {
         Account payerAccount = accountRepository.findById(request.payer())
                 .orElseThrow(() -> new AccountNotFoundException(request.payer()));
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        if (!payerAccount.getEmail().equals(email)) {
+        if (tokenService.isTokenValid(payerAccount)) {
 
             throw new AccountTokenMismatchException();
-
         }
 
         Wallet senderWallet = payerAccount.getMainWallet();
