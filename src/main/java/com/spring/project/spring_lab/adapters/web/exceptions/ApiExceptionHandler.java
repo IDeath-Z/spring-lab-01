@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.spring.project.spring_lab.domain.exceptions.account.AccountAlreadyDeactivatedException;
 import com.spring.project.spring_lab.domain.exceptions.account.AccountAlreadyRegisteredException;
 import com.spring.project.spring_lab.domain.exceptions.account.AccountNotFoundException;
+import com.spring.project.spring_lab.domain.exceptions.account.AccountTokenMismatchException;
 import com.spring.project.spring_lab.domain.exceptions.account.CnpjAlreadyRegisteredException;
 import com.spring.project.spring_lab.domain.exceptions.account.CpfAlreadyRegisteredException;
-import com.spring.project.spring_lab.domain.exceptions.transaction.AccountTokenMismatchException;
 import com.spring.project.spring_lab.domain.exceptions.transaction.TransactionNotAuthorizedException;
 import com.spring.project.spring_lab.domain.exceptions.wallet.BalanceMustBeZeroException;
+import com.spring.project.spring_lab.domain.exceptions.wallet.CanNotDeactivateMainWalletException;
 import com.spring.project.spring_lab.domain.exceptions.wallet.InsufficientFundsException;
+import com.spring.project.spring_lab.domain.exceptions.wallet.WalletAlreadyDeactivatedException;
 import com.spring.project.spring_lab.domain.exceptions.wallet.WalletNotFoundException;
 
 @RestControllerAdvice
@@ -59,7 +61,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(AccountNotFoundException.class)
-    public ResponseEntity<?> UserNotFound(AccountNotFoundException ex) {
+    public ResponseEntity<?> accountNotFound(AccountNotFoundException ex) {
 
         var body = Map.of(
                 "timestamp", OffsetDateTime.now(),
@@ -71,7 +73,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(WalletNotFoundException.class)
-    public ResponseEntity<?> WalletNotFound(WalletNotFoundException ex) {
+    public ResponseEntity<?> walletNotFound(WalletNotFoundException ex) {
 
         var body = Map.of(
                 "timestamp", OffsetDateTime.now(),
@@ -83,7 +85,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(InsufficientFundsException.class)
-    public ResponseEntity<?> InsufficientFunds(InsufficientFundsException ex) {
+    public ResponseEntity<?> insufficientFunds(InsufficientFundsException ex) {
 
         var body = Map.of(
                 "timestamp", OffsetDateTime.now(),
@@ -95,7 +97,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(TransactionNotAuthorizedException.class)
-    public ResponseEntity<?> TransactionNotAuthorized(TransactionNotAuthorizedException ex) {
+    public ResponseEntity<?> transactionNotAuthorized(TransactionNotAuthorizedException ex) {
 
         var body = Map.of(
                 "timestamp", OffsetDateTime.now(),
@@ -107,7 +109,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(AccountAlreadyDeactivatedException.class)
-    public ResponseEntity<?> AccountAlreadyDeactivated(AccountAlreadyDeactivatedException ex) {
+    public ResponseEntity<?> accountAlreadyDeactivated(AccountAlreadyDeactivatedException ex) {
 
         var body = Map.of(
                 "timestamp", OffsetDateTime.now(),
@@ -119,7 +121,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(BalanceMustBeZeroException.class)
-    public ResponseEntity<?> BalanceMustBeZero(BalanceMustBeZeroException ex) {
+    public ResponseEntity<?> balanceMustBeZero(BalanceMustBeZeroException ex) {
 
         var body = Map.of(
                 "timestamp", OffsetDateTime.now(),
@@ -131,7 +133,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(AccountTokenMismatchException.class)
-    public ResponseEntity<?> TokenDoesNotBelongsToUser(AccountTokenMismatchException ex) {
+    public ResponseEntity<?> accountTokenMismatchException(AccountTokenMismatchException ex) {
 
         var body = Map.of(
                 "timestamp", OffsetDateTime.now(),
@@ -140,5 +142,29 @@ public class ApiExceptionHandler {
                 "message", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+    }
+
+    @ExceptionHandler(WalletAlreadyDeactivatedException.class)
+    public ResponseEntity<?> walletAlreadyDeactivatedException(WalletAlreadyDeactivatedException ex) {
+
+        var body = Map.of(
+                "timestamp", OffsetDateTime.now(),
+                "status", HttpStatus.CONFLICT.value(),
+                "error", "Conflict",
+                "message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
+    @ExceptionHandler(CanNotDeactivateMainWalletException.class)
+    public ResponseEntity<?> canNotDeactivateMainWalletException(CanNotDeactivateMainWalletException ex) {
+
+        var body = Map.of(
+                "timestamp", OffsetDateTime.now(),
+                "status", HttpStatus.BAD_REQUEST.value(),
+                "error", "BadRequest",
+                "message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 }
